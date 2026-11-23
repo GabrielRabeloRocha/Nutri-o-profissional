@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedMetric Pro — Avaliação Clínica & Evolução de IMC</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="logo-icon">⚕️</div>
+            <div>
+                <h1>MedMetric <span>Pro</span></h1>
+                <p>Sistema de Triagem Antropométrica & Evolução Longitudinal</p>
+            </div>
+        </div>
+        <div class="protocol-badge">Protocolo OMS / WHO</div>
+    </header>
+
+    <main class="container">
+        <!-- PAINEL DE ENTRADA DE DADOS -->
+        <section class="card form-section" aria-labelledby="form-heading">
+            <h2 id="form-heading">Parâmetros Antropométricos</h2>
+            <form id="imc-form" novalidate>
+                <div class="input-group">
+                    <label for="paciente-nome">Identificação do Paciente</label>
+                    <input type="text" id="paciente-nome" placeholder="Ex: Gabriel Rabelo" required minlength="2">
+                </div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label for="peso">Massa Corporal (kg)</label>
+                        <input type="number" id="peso" step="0.1" min="20" max="400" placeholder="75.0" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="altura">Estatura (cm)</label>
+                        <input type="number" id="altura" step="1" min="100" max="250" placeholder="175" required>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="input-group">
+                        <label for="idade">Idade (anos)</label>
+                        <input type="number" id="idade" min="18" max="120" value="25" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="sexo">Sexo Biológico</label>
+                        <select id="sexo">
+                            <option value="M">Masculino</option>
+                            <option value="F">Feminino</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="form-error" class="error-banner hidden" role="alert"></div>
+
+                <button type="submit" class="btn-primary" id="btn-calcular">
+                    Processar Avaliação Clínica
+                </button>
+            </form>
+        </section>
+
+        <!-- PAINEL DE DIAGNÓSTICO E ESCALA VISUAL -->
+        <section class="card result-section" aria-live="polite">
+            <h2>Laudo Antropométrico</h2>
+
+            <div id="empty-state" class="empty-state">
+                <p>Preencha os dados biométricos ao lado para gerar o diagnóstico de IMC, faixa de peso saudável e risco metabólico.</p>
+            </div>
+
+            <div id="diagnostic-content" class="hidden">
+                <div class="kpi-header">
+                    <div class="imc-score-box">
+                        <span class="label">Índice de Massa Corporal</span>
+                        <div class="score-value"><strong id="res-imc">0.0</strong> <small>kg/m²</small></div>
+                    </div>
+                    <div id="status-pill" class="status-pill">Eutrofia</div>
+                </div>
+
+                <div class="gauge-wrapper">
+                    <div class="gauge-bar">
+                        <div class="zone under" title="Abaixo do peso (< 18.5)"></div>
+                        <div class="zone normal" title="Peso normal (18.5 - 24.9)"></div>
+                        <div class="zone over" title="Sobrepeso (25.0 - 29.9)"></div>
+                        <div class="zone obese" title="Obesidade (≥ 30.0)"></div>
+                        <div id="gauge-marker" class="gauge-marker"></div>
+                    </div>
+                    <div class="gauge-labels">
+                        <span>15</span>
+                        <span>18.5</span>
+                        <span>25.0</span>
+                        <span>30.0</span>
+                        <span>40+</span>
+                    </div>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-tile">
+                        <span>Faixa Saudável (OMS)</span>
+                        <strong id="res-faixa">--</strong>
+                    </div>
+                    <div class="metric-tile">
+                        <span>Peso Ideal Estimado</span>
+                        <strong id="res-ideal">--</strong>
+                    </div>
+                    <div class="metric-tile">
+                        <span>Ajuste Sugerido</span>
+                        <strong id="res-diferenca">--</strong>
+                    </div>
+                    <div class="metric-tile">
+                        <span>Risco de Comorbidade</span>
+                        <strong id="res-risco">--</strong>
+                    </div>
+                </div>
+
+                <div class="clinical-notes">
+                    <h3>Conduta e Recomendações</h3>
+                    <ul id="res-recomendacoes"></ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- NOVO: GRÁFICO DE EVOLUÇÃO TEMPORAL -->
+        <section class="card chart-section">
+            <div class="section-header">
+                <div>
+                    <h2>Curva de Evolução Longitudinal (IMC & Peso)</h2>
+                    <p class="subtitle">Acompanhamento cronológico com faixa de referência eutrófica (18.5 – 24.9 kg/m²)</p>
+                </div>
+                <div class="filter-controls">
+                    <select id="patient-filter" aria-label="Filtrar por paciente">
+                        <option value="ALL">Todos os Pacientes</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="chart-empty" class="chart-empty">
+                <p>Registre ao menos uma avaliação para visualizar a linha de tendência temporal.</p>
+            </div>
+
+            <div class="chart-wrapper hidden" id="chart-wrapper">
+                <canvas id="imc-evolution-chart"></canvas>
+            </div>
+        </section>
+
+        <!-- HISTÓRICO LONGITUDINAL EM TABELA -->
+        <section class="card history-section">
+            <div class="section-header">
+                <h2>Registros Clínicos Detalhados</h2>
+                <button type="button" id="btn-limpar" class="btn-ghost">Limpar Histórico</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data/Hora</th>
+                            <th>Paciente</th>
+                            <th>Peso (kg)</th>
+                            <th>Altura (cm)</th>
+                            <th>IMC</th>
+                            <th>Variação</th>
+                            <th>Classificação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

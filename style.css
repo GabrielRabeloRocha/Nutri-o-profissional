@@ -1,0 +1,292 @@
+:root {
+    --bg-app: #f0f4f8;
+    --bg-card: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --border: #cbd5e1;
+    --primary: #0284c7;
+    --primary-hover: #0369a1;
+    --c-under: #38bdf8;
+    --c-normal: #10b981;
+    --c-over: #f59e0b;
+    --c-obese: #ef4444;
+    --radius: 12px;
+    --shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    line-height: 1.5;
+}
+
+.topbar {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand { display: flex; align-items: center; gap: 0.85rem; }
+.logo-icon {
+    font-size: 1.8rem;
+    background: #e0f2fe;
+    padding: 0.4rem 0.6rem;
+    border-radius: 10px;
+}
+
+.brand h1 { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; }
+.brand h1 span { color: var(--primary); }
+.brand p { font-size: 0.8rem; color: var(--text-muted); }
+
+.protocol-badge {
+    background: #f1f5f9;
+    border: 1px solid var(--border);
+    padding: 0.35rem 0.85rem;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 1.5rem;
+}
+
+.chart-section, .history-section { grid-column: 1 / -1; }
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    box-shadow: var(--shadow);
+}
+
+.card h2 {
+    font-size: 1.15rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.85rem;
+    margin-bottom: 1.25rem;
+}
+
+.section-header h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0.2rem;
+}
+
+.subtitle {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.filter-controls select {
+    min-width: 210px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.88rem;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.input-group { margin-bottom: 1rem; }
+label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+.btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 0.45rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.btn-ghost:hover { background: #f8fafc; color: var(--text-main); }
+
+.error-banner {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    padding: 0.7rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state, .chart-empty {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 310px;
+    width: 100%;
+}
+
+.kpi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.score-value strong { font-size: 2.5rem; line-height: 1; color: var(--text-main); }
+.score-value small { color: var(--text-muted); font-weight: 600; }
+
+.status-pill {
+    padding: 0.5rem 1rem;
+    border-radius: 99px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.gauge-wrapper { margin-bottom: 1.5rem; }
+.gauge-bar {
+    position: relative;
+    height: 14px;
+    border-radius: 99px;
+    display: flex;
+    background: #e2e8f0;
+}
+.zone { height: 100%; }
+.zone.under { width: 14%; background: var(--c-under); border-radius: 99px 0 0 99px; }
+.zone.normal { width: 26%; background: var(--c-normal); }
+.zone.over { width: 20%; background: var(--c-over); }
+.zone.obese { width: 40%; background: var(--c-obese); border-radius: 0 99px 99px 0; }
+
+.gauge-marker {
+    position: absolute;
+    top: -5px;
+    width: 6px;
+    height: 24px;
+    background: #0f172a;
+    border: 2px solid #fff;
+    border-radius: 4px;
+    transform: translateX(-50%);
+    transition: left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gauge-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+    margin-bottom: 1.25rem;
+}
+
+.metric-tile {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 0.85rem;
+    border-radius: 8px;
+}
+
+.metric-tile span { display: block; font-size: 0.78rem; color: var(--text-muted); }
+.metric-tile strong { font-size: 1.05rem; color: var(--text-main); }
+
+.clinical-notes {
+    background: #f0f9ff;
+    border-left: 4px solid var(--primary);
+    padding: 1rem;
+    border-radius: 0 8px 8px 0;
+}
+
+.clinical-notes h3 { font-size: 0.9rem; margin-bottom: 0.4rem; }
+.clinical-notes ul { margin-left: 1.2rem; font-size: 0.88rem; color: #1e293b; }
+
+.table-container { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+th { color: var(--text-muted); font-weight: 600; background: #f8fafc; }
+
+.delta-badge {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+}
+.delta-neutral { background: #f1f5f9; color: #475569; }
+.delta-up { background: #fef3c7; color: #b45309; }
+.delta-down { background: #dcfce7; color: #15803d; }
+
+.hidden { display: none; }
+
+@media (max-width: 850px) {
+    .container { grid-template-columns: 1fr; }
+    .section-header { flex-direction: column; }
+}
